@@ -1,11 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
+import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Header } from './components/Header/Header';
 import { MoviesList } from './components/MoviesList/MoviesList';
 
 export default function App() {
   return (
-    <ScrollView >
+    <ScrollView style={{
+    backgroundColor: '#000000',
+
+    }}>
     <Header />
     <View style={styles.container}>
       <MoviesList />
@@ -17,10 +21,7 @@ export default function App() {
 const styles = StyleSheet.create({
 
   container: {
-    flex: 1,
-    backgroundColor: '#000000',
-    alignItems: 'center',
-    justifyContent: 'center',
+    margin: 16,
   },
 });
 

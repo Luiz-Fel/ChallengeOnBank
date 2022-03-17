@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -6,7 +7,7 @@ import { MovieListComponent } from '../MovieListComponent/MovieListComponent';
 export interface MovieComponentProps {
     id: number,
     title: string,
-    rating: number,
+    vote_average: number,
     poster_path: string,
     release_date: string,
 }
@@ -20,9 +21,13 @@ export function MoviesList() {
             method: 'GET',
         }).then(response => response.json())
         .then(response => setMovies(response.results))
+
+       const categories = await fetch('http://api.themoviedb.org/3/genre/movie/list?api_key=a5d3a44d547cd3cf6e6da81cacc136ef')
+        .then(response => response.json())
+
         
-        console.log(movies) 
-    }
+        console.log(categories)  
+    } 
 
     useEffect(() => {
         getMovies() 
@@ -32,17 +37,27 @@ export function MoviesList() {
         <>
             <View>
                 <Text>Filmes</Text>
-                {movies.map((movie) => {
+                <View style={styles.moviesContainer}>
 
+                {movies.map((movie) => {
+                    
                     return(<MovieListComponent
                         key={movie.id} 
                         id={movie.id}  
                         title={movie.title} 
-                        rating={movie.rating} 
+                        vote_average={movie.vote_average} 
                         poster_path={movie.poster_path} 
                         release_date={movie.release_date} />)
-                })}
+                    })}
+                </View>
             </View>
         </>
     )
 }
+
+const styles = StyleSheet.create({
+    moviesContainer: {
+        display: 'flex',
+
+    }
+})
