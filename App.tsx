@@ -1,27 +1,40 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { Header } from './components/Header/Header';
-import { MoviesList } from './components/MoviesList/MoviesList';
+import { Provider } from 'react-redux'
+import { NavigationContainer, StackActions } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { HomeScreen } from './src/pages/HomeScreen';
+import { AllMovies } from './src/pages/AllMovies';
+import store from './src/store';
+
+const Stack = createNativeStackNavigator()
+
+export type RootStackParamList = {
+  HomeScreen: undefined;
+  AllMovies: undefined;
+  Feed: { sort: 'latest' | 'top' } | undefined;
+};
 
 export default function App() {
   return (
-    <ScrollView style={{
-    backgroundColor: '#000000',
+    <Provider store={store}>
 
-    }}>
-    <Header />
-    <View style={styles.container}>
-      <MoviesList />
-    </View>
-    </ScrollView>
+    <NavigationContainer>
+
+    <Stack.Navigator>
+      <Stack.Screen 
+      name='Home'
+      component={HomeScreen}
+      options={{title: 'Welcome'}}
+      />
+       <Stack.Screen 
+      name='AllMovies'
+      component={AllMovies}
+      options={{title: 'All movies'}}
+      />
+    </Stack.Navigator>
+   
+    </NavigationContainer>
+      </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-
-  container: {
-    margin: 16,
-  },
-});
 
