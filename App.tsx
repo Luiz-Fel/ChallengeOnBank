@@ -1,23 +1,26 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { Header } from './components/header';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { Header } from './components/Header/Header';
+import { MoviesList } from './components/MoviesList/MoviesList';
 
 export default function App() {
   return (
-    <>
+    <ScrollView >
     <Header />
     <View style={styles.container}>
-      <Text>Hello world!</Text>
+      <MoviesList />
     </View>
-    </>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
     alignItems: 'center',
     justifyContent: 'center',
   },
 });
+

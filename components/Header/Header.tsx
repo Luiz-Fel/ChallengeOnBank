@@ -5,13 +5,13 @@ export function Header() {
 
     return(
         <View style={styles.header}>    
-            <Text>Hello</Text>
+            <Text>Filmes</Text>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     header: {
-        
+        padding: 30,
     }
 })
