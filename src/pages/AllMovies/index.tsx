@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView, StyleSheet, View,Text, Pressable } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
-import { Creators } from "../../store/ducks/example";
+import { Creators } from "../../store/ducks/data";
 
 export function AllMovies() {
 
@@ -10,7 +10,6 @@ export function AllMovies() {
     const dispatch = useDispatch();
 
     const movies = () => {
-        dispatch(Creators.loadMovies())
         console.log('D A T A: ', test)    
     }
 

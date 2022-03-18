@@ -10,26 +10,13 @@ import React from 'react';
     posterPath: string,
     overview: string,
     genreIds: number[],
-    categoriesList: {
-        id: number,
-        name: string,
-    }[],
+    categories:  string,
 }
 
 
-export function MovieListComponent({title, voteAverage, posterPath, overview, genreIds, categoriesList} : MovieComponentProps) {
+export function MovieListComponent({title, voteAverage, posterPath, overview, genreIds, categories} : MovieComponentProps) {
     
     const rating = (Math.round(voteAverage / 2 * 10) / 10).toFixed(1)
-
-
-    const categories = (categoriesList.filter((category) => {
-        return genreIds.includes(category.id) 
-    }
-    ).map((selectedGenres) => {
-        return selectedGenres.name
-    })
-    ).join(',')
-
 
     const overviewText = (overview.length >= 160) 
     ? overview.slice(0, 160) + '...'

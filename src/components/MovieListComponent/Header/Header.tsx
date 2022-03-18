@@ -1,8 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 import { Button, Pressable, StyleSheet, Text, View } from 'react-native';
-import { RootStackParamList } from '../../../App';
-import { COLORS } from '../../colors';
+import { RootStackParamList } from '../../../../App';
+import { COLORS } from '../../../colors';
 
 
 export function Header(navigation: NativeStackScreenProps<RootStackParamList, 'HomeScreen'>) {
