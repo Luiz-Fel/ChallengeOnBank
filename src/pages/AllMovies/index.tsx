@@ -88,7 +88,11 @@ export function AllMovies({ navigation }: NativeStackScreenProps<RootStackParamL
                     if (selectedCategory === -1 || genre_ids.includes(selectedCategory)) {
                         
                         return(
-                            <Pressable key={id}>
+                            <Pressable key={id} onPress={() => {
+                                navigation.navigate('Movie', {
+                                    id: id,
+                                })
+                            }}>
                         <View  style={styles.movieContainer}>
                             <Image 
                             source={{uri: `https://image.tmdb.org/t/p/w500/${poster_path}`}}

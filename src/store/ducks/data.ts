@@ -4,12 +4,16 @@ export interface DataProps {
   
         movies: {
     
-                id: number,
-                title: string,
-                vote_average: number,
-                poster_path: string,
-                overview: string,
-                genre_ids: number[],
+            id: number,
+            title: string,
+            vote_average: number,
+            vote_count: number,
+            poster_path: string,
+            backdrop_path: string,
+            overview: string,
+            genre_ids: number[],
+            popularity: number,
+            release_date: string,
         }[],
         genres: {
             id: number,

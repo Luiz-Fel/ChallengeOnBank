@@ -14,7 +14,7 @@ export function HomeScreen({navigation, route} : NativeStackScreenProps<RootStac
       }}>
     <Header navigation={navigation} route={route}/>
     <View style={styles.container}>
-      <MoviesList />
+      <MoviesList navigation={navigation} route={route} />
     </View>
 
     </ScrollView>
