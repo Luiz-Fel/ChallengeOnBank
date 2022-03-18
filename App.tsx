@@ -5,14 +5,19 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomeScreen } from './src/pages/HomeScreen';
 import { AllMovies } from './src/pages/AllMovies';
 import store from './src/store';
+import { Categories } from './src/pages/Categories';
 
 const Stack = createNativeStackNavigator()
 
 export type RootStackParamList = {
   HomeScreen: undefined;
   AllMovies: undefined;
-  Feed: { sort: 'latest' | 'top' } | undefined;
+  Categories: undefined;
 };
+
+
+
+
 
 export default function App() {
   return (
@@ -29,7 +34,12 @@ export default function App() {
        <Stack.Screen 
       name='AllMovies'
       component={AllMovies}
-      options={{title: 'All movies'}}
+      options={{title: ''}}
+
+      />
+      <Stack.Screen 
+      name='Categories'
+      component={Categories}
       />
     </Stack.Navigator>
    

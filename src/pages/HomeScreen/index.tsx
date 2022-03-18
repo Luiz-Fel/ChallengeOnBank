@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { RootStackParamList } from "../../../App";
-import { Header } from "../../components/MovieListComponent/Header/Header";
+import { Header } from "../../components/Header/Header";
 import { MoviesList } from "../../components/MoviesList/MoviesList";
 
 export function HomeScreen({navigation, route} : NativeStackScreenProps<RootStackParamList, 'HomeScreen'>) {
