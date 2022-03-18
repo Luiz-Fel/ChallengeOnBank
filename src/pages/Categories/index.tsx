@@ -22,10 +22,7 @@ export function Categories({ navigation }: NativeStackScreenProps<RootStackParam
                   return(
                       <Pressable key={currentCategory.id} onPress={() => {
                         dispatch(Creators.selectCategory(currentCategory.id))
-                        const filteredMovies = data.popularMovies.results.filter((movie) => movie.genre_ids.includes(currentCategory.id))
-                        if(filteredMovies.length < 10) {
-                            //LOAD MORE
-                        }
+                        
                         navigation.navigate('AllMovies')
                         
                       }}>

@@ -15,12 +15,11 @@ export function MoviesList() {
     const dispatch = useDispatch()
     const  { data } = useSelector((state : DataProps)  => state) 
     const genres = data.genres
-    const movies = data.popularMovies.results
+    const movies = data.movies
     async function getMovies() {
     
-        await fetch('https://api.themoviedb.org/3/movie/popular?api_key=a5d3a44d547cd3cf6e6da81cacc136ef&language=en-US&page=1', {
-            method: 'GET',
-        }).then(response => response.json())
+        await fetch('https://api.themoviedb.org/3/movie/popular?api_key=a5d3a44d547cd3cf6e6da81cacc136ef&language=en-us&page=1')
+        .then(response => response.json())
         .then(response => dispatch(Creators.getMovies(response)))
     
         
@@ -35,6 +34,7 @@ export function MoviesList() {
         getMovies()  
     }, []) 
 
+
     return(   
         <> 
             <View>
@@ -42,7 +42,7 @@ export function MoviesList() {
                 <View style={styles.moviesContainer}>
 
                 {
-                    movies
+                    movies.length > 0
                 &&
                     movies.map((movie) => {
 
@@ -62,6 +62,7 @@ export function MoviesList() {
                             categories= {categoriesList}
                             />)
                         })}
+
                 </View>
             </View>
         </>

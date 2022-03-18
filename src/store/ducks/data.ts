@@ -2,9 +2,7 @@
 export interface DataProps {
     data: {
   
-        popularMovies: {
-            page: number,
-            results: {
+        movies: {
     
                 id: number,
                 title: string,
@@ -12,13 +10,12 @@ export interface DataProps {
                 poster_path: string,
                 overview: string,
                 genre_ids: number[],
-            }[]
-        },
+        }[],
         genres: {
             id: number,
             name: string,
         }[],
-        selectedCategoryId: number
+        selectedCategoryId: number,
     }
   }
 
@@ -30,12 +27,12 @@ export const Types = {
     LOAD_MORE_MOVIES:   '@data/LOAD_MORE_MOVIES',
     GET_MOVIES: '@data/GET_MOVIES',
     GET_GENRES: '@data/GET_GENRES',
-    SELECT_CATEGORY: '@data/SELECT_CATEGORY'
+    SELECT_CATEGORY: '@data/SELECT_CATEGORY',
 }
 
 const INITIAL_STATE = {
-    popularMovies: [{}],
-    genres: [{}],
+    movies: [],
+    genres: [],
     selectedCategoryId: -1,
     
 }
@@ -47,7 +44,7 @@ export default function data(state = INITIAL_STATE , action: any) {
            // console.log(action)
            return {
                ...state,
-               popularMovies: action.movies,
+               movies: action.movies.results,
            }
 
         case Types.GET_GENRES:
@@ -58,14 +55,16 @@ export default function data(state = INITIAL_STATE , action: any) {
             
 
         case Types.LOAD_MORE_MOVIES:
-            const newMovies: [string] = ['teste']
-            return {...state, popularMovies: [...state.popularMovies, ...newMovies]}
+            //console.log(action)
+            return {...state, 
+                movies:  [ ...state.movies, ...action.newMovies],
+            }
         
         case Types.SELECT_CATEGORY:
             return {...state, 
                 selectedCategoryId: action.category,
             }
-        
+       
         default:
             return state;
     }
@@ -74,16 +73,22 @@ export default function data(state = INITIAL_STATE , action: any) {
 
 
 export const Creators = {
-    getMovies: (movies: {}[]) => ({
+    getMovies: (movies: DataProps['data']['movies']) => ({
         type: Types.GET_MOVIES,
         movies,
     }),
-    getGenres: ({ genres }: { genres: {}[] }) => ({
+    getGenres: ({ genres }: DataProps['data']['genres']) => ({
         type: Types.GET_GENRES,
         genres,
     }),
-    selectCategory: (category : number) => ({
+    selectCategory: (category : DataProps['data']['selectedCategoryId']) => ({
         type: Types.SELECT_CATEGORY,
         category,
-    })
+    }),
+    loadMoreMovies: (newMovies : DataProps['data']['movies']) => ({
+        type: Types.LOAD_MORE_MOVIES,
+        newMovies,
+    }),
+    
+    
 } 

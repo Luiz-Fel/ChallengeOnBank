@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
+import { useState } from "react";
 import { ScrollView, StyleSheet, View,Text, Pressable, Image, NativeScrollEvent } from 'react-native';
 import Icon from "react-native-vector-icons/AntDesign";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,10 +11,39 @@ import { Creators, DataProps } from "../../store/ducks/data";
 
 export function AllMovies({ navigation }: NativeStackScreenProps<RootStackParamList, 'AllMovies'>) {
 
+    const [page, setPage] = useState(1)
+
+    
     const { data } = useSelector((state : DataProps) => state) 
-    const movies = data.popularMovies.results
+    //Api cache not working correctly so its sending repeated movies.
+    const [lastPageIDs, setLastPageIDs] = useState(data.movies.map((movie) => movie.id)) 
+    const dispatch = useDispatch()
+    const movies = data.movies
     const selectedCategory = data.selectedCategoryId
     const category = data.genres.filter((genre) => selectedCategory === genre.id).map((curr) => curr.name)
+
+    async function loadMoreMovies() {
+        await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=a5d3a44d547cd3cf6e6da81cacc136ef&language=en-US&page=${page + 1}`, {
+            method: 'GET',
+        })
+        .then(response => response.json())
+        .then((response => {
+            if (response.ok === false) {
+                return
+            }else {
+                //Api cache not working correctly so its sending repeated movies.
+                const results : DataProps['data']['movies'] = response.results
+                setLastPageIDs(results.map((movie) => movie.id))
+                dispatch(Creators.loadMoreMovies(results.filter((movie) => {
+                    console.log(!lastPageIDs.includes(movie.id))
+                   return !lastPageIDs.includes(movie.id)
+                } )))
+                setPage(page + 1)
+            }
+        }))
+      
+     
+    }
 
     
     const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize} : NativeScrollEvent) => {
@@ -22,12 +52,13 @@ export function AllMovies({ navigation }: NativeStackScreenProps<RootStackParamL
       contentSize.height - paddingToBottom;
   };
 
+
     return(
         <>
         <ScrollView 
         onScroll={({nativeEvent}) => {
             if (isCloseToBottom(nativeEvent)) {
-                console.log('FIM DA APLICAÇÃO')
+                loadMoreMovies()
             }
           }}
           scrollEventThrottle={400}
@@ -55,7 +86,7 @@ export function AllMovies({ navigation }: NativeStackScreenProps<RootStackParamL
 
                 {movies.map(({poster_path, id, title, genre_ids}) => {
                     if (selectedCategory === -1 || genre_ids.includes(selectedCategory)) {
-
+                        
                         return(
                             <Pressable key={id}>
                         <View  style={styles.movieContainer}>
@@ -70,7 +101,7 @@ export function AllMovies({ navigation }: NativeStackScreenProps<RootStackParamL
                 }
                 })}
             </View>
-            <Pressable>
+            <Pressable onPress={loadMoreMovies}>
                 <View style={styles.loadMoreContainer}>
                     <Text style={styles.loadMoreButton}>
                         Load More
