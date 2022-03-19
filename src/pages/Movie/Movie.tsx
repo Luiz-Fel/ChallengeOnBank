@@ -3,11 +3,11 @@ import { format } from "date-fns";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
-import { useSelector } from "react-redux";
+import { StyleSheet, Text, View, Image, ScrollView, Pressable, BackHandler } from 'react-native';
+import { useDispatch, useSelector } from "react-redux";
 import { RootStackParamList } from "../../../App";
 import { COLORS } from "../../colors";
-import { DataProps } from "../../store/ducks/data";
+import { Creators, DataProps } from "../../store/ducks/data";
  
 interface MovieProps {
     
@@ -22,28 +22,46 @@ interface MovieProps {
         popularity: number,
         release_date: string,
         formattedDate: string,
+        categoriesList: {
+            name: string,
+            id: number,
+        }[],
 
 }
 
-export function Movie({ route } : NativeStackScreenProps<RootStackParamList, 'Movie'>) {
+export function Movie({ navigation, route } : NativeStackScreenProps<RootStackParamList, 'Movie'>) {
     const { id } = route.params
     
-    const [movieParams, setMovieParams] = useState< any >()
-    const  { data } = useSelector((state : DataProps)  => state) 
-    
+    const [movieParams, setMovieParams] = useState< MovieProps >()
+    const  { data } = useSelector((state : DataProps)  => state)
+    const dispatch = useDispatch()
+
+    const genres = data.genres
+
+
+
     useEffect(() => {
-        const params = data.movies.find((movie) => movie.id === id)
+        const params = data.movies.find((movie) => movie.id === id) as unknown as MovieProps
         setMovieParams( {
             ...params,
-            formattedDate: format(new Date(params!.release_date), 'dd MMM yyyy')
+            formattedDate: format(new Date(params!.release_date), 'dd MMM yyyy'),
+            categoriesList : (genres.filter(
+                (genre) => params.genre_ids.includes(genre.id))) 
             
         }
-             )
-            console.log( data.movies.find((movie) => movie.id === id))
+             ) 
+            
+            BackHandler.addEventListener("hardwareBackPress", () =>{
+                console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+                dispatch(Creators.reset())
+                return true
+            })
         },[])
-    if (movieParams) {
+    
+    
 
-    }
+
+
     return(
         <>
         {
@@ -68,8 +86,25 @@ export function Movie({ route } : NativeStackScreenProps<RootStackParamList, 'Mo
                     />
                     <Text style={[styles.posterTitle, styles.content]}>{movieParams.title}</Text>
                 </View>
-                <View>
-                    {/* CATEGORIES CAROUSEL */}
+                <View style={styles.categoryContainer}>
+                    <ScrollView horizontal={true}>
+                    {movieParams.categoriesList.map((category) => {
+                        return(
+                                <Pressable key={category.id} onPress={() => {
+                                    dispatch(Creators.selectCategory(category.id))
+                                    
+                                    navigation.navigate('AllMovies')
+
+                                }}>
+                                    <View style={styles.category}>
+                                        <Text style={[styles.content, styles.categoryText]}>
+                                            {category.name}
+                                        </Text>
+                                    </View>
+                                </Pressable>
+                        )
+                    })}
+                    </ScrollView>
                 </View>
                 <Text>About</Text>
                 <View>
@@ -113,10 +148,27 @@ export function Movie({ route } : NativeStackScreenProps<RootStackParamList, 'Mo
 const styles = StyleSheet.create({
     content: {
         color: COLORS.text,
+        fontSize: 16,
 
     },
 
+    categoryContainer: {
+        marginTop: 18,
+        marginBottom: 18,
+        flexDirection: 'row',
 
+    },
+    category: {
+        margin: 8,
+        padding: 8,
+        paddingRight: 12,
+        paddingLeft: 12,
+        backgroundColor: COLORS.red,
+        borderRadius: 24,
+    },
+    categoryText: {
+        fontSize: 18,
+    },
     movieContainer: {
         paddingLeft: 29,
         paddingRight: 29,

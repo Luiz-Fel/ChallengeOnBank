@@ -1,11 +1,9 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 import { useEffect } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { Icon } from 'react-native-vector-icons/Icon';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootStackParamList } from '../../../App';
-import { COLORS } from '../../colors';
 import { Creators, DataProps } from '../../store/ducks/data';
 import { MovieListComponent } from '../MovieListComponent/MovieListComponent';
 
@@ -33,8 +31,15 @@ export function MoviesList({ navigation }: NativeStackScreenProps<RootStackParam
        
     }
     useEffect(() => {  
-        getMovies()  
+            getMovies()
     }, []) 
+    useEffect(() => {
+        const reset = navigation.addListener('focus', () => {
+            dispatch(Creators.reset())
+          });
+      
+          return reset;
+    }, [navigation])
 
 
     return(   

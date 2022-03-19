@@ -17,7 +17,19 @@ export function Categories({ navigation }: NativeStackScreenProps<RootStackParam
         <ScrollView style={{
             backgroundColor: '#000000',
             
-          }}>
+          }}>   
+                {selectedCategory !== -1
+                &&
+                <Pressable onPress={() => {
+                    dispatch(Creators.reset())
+                    navigation.navigate('AllMovies')
+                }}>
+                    <View style={styles.resetButton}>
+
+                    <Text style={styles.resetButtonText}>Clear</Text>
+                    </View>
+                </Pressable>
+                }
               {categories.map((currentCategory) => {
                   return(
                       <Pressable key={currentCategory.id} onPress={() => {
@@ -49,6 +61,24 @@ export function Categories({ navigation }: NativeStackScreenProps<RootStackParam
 }
 
 const styles = StyleSheet.create({
+    resetButton: {
+        flexDirection: 'row',
+        alignContent: 'center',
+        justifyContent: 'center',
+        margin: 12,
+        backgroundColor: COLORS.red,
+        borderRadius: 24,
+        maxWidth: 80,
+    },
+    resetButtonText: {
+        color: COLORS.text,
+        padding: 6,
+        paddingLeft: 12,
+        paddingRight: 12,
+        fontWeight: 'bold',
+        fontSize: 20,
+
+    },
     categorySection : {
         flexDirection: 'row',
         alignItems: 'center',
@@ -57,13 +87,13 @@ const styles = StyleSheet.create({
     },
     categoryName: {
         color: COLORS.text,
-        fontSize: 32,
+        fontSize: 22,
         padding: 16,
 
     },
     categoryNameSelected: {
         color: COLORS.red,
-        fontSize: 32,
+        fontSize: 22,
         padding: 16,
 
     }

@@ -1,13 +1,14 @@
 import React from 'react';
 import { Provider } from 'react-redux'
-import { NavigationContainer, StackActions } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomeScreen } from './src/pages/HomeScreen';
 import { AllMovies } from './src/pages/AllMovies';
 import store from './src/store';
 import { Categories } from './src/pages/Categories';
-import { Movie } from './src/components/Movie/Movie';
+import { Movie } from './src/pages/Movie/Movie';
 import { COLORS } from './src/colors';
+
 
 const Stack = createNativeStackNavigator()
 
@@ -35,7 +36,7 @@ export default function App() {
       name='Home'
       component={HomeScreen}
       options={{
-        title: 'Home',
+        title: 'Movie App',
         headerStyle: {
           backgroundColor: COLORS.red,
         },
@@ -72,7 +73,8 @@ export default function App() {
         headerStyle: {
           backgroundColor: COLORS.red,
         },
-        headerTintColor: COLORS.text
+        headerTintColor: COLORS.text,
+       
     }}
       />
     </Stack.Navigator>

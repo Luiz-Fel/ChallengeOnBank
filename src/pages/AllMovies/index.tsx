@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { useState } from "react";
-import { ScrollView, StyleSheet, View,Text, Pressable, Image, NativeScrollEvent } from 'react-native';
+import { ScrollView, StyleSheet, View,Text, Pressable, Image, NativeScrollEvent, ActivityIndicator } from 'react-native';
 import Icon from "react-native-vector-icons/AntDesign";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStackParamList } from "../../../App";
@@ -35,7 +35,6 @@ export function AllMovies({ navigation }: NativeStackScreenProps<RootStackParamL
                 const results : DataProps['data']['movies'] = response.results
                 setLastPageIDs(results.map((movie) => movie.id))
                 dispatch(Creators.loadMoreMovies(results.filter((movie) => {
-                    console.log(!lastPageIDs.includes(movie.id))
                    return !lastPageIDs.includes(movie.id)
                 } )))
                 setPage(page + 1)
@@ -105,13 +104,7 @@ export function AllMovies({ navigation }: NativeStackScreenProps<RootStackParamL
                 }
                 })}
             </View>
-            <Pressable onPress={loadMoreMovies}>
-                <View style={styles.loadMoreContainer}>
-                    <Text style={styles.loadMoreButton}>
-                        Load More
-                    </Text>
-                </View>
-            </Pressable>
+            <ActivityIndicator size="large" color={COLORS.red} />
         </ScrollView>
         </>
         
@@ -129,7 +122,8 @@ const styles = StyleSheet.create({
     headerText: {
         color: COLORS.red,
         fontSize: 36,
-        padding: 16,
+        paddingTop: 16,
+        paddingBottom: 16,
     },
     filterContainer: {
         flexDirection: 'row',
@@ -162,14 +156,4 @@ const styles = StyleSheet.create({
         color: COLORS.text,
         fontSize: 20,
     },
-    loadMoreButton: {
-        color: COLORS.text,
-        fontSize: 24,
-    },
-    loadMoreContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 32,
-
-    }
 })

@@ -32,6 +32,7 @@ export const Types = {
     GET_MOVIES: '@data/GET_MOVIES',
     GET_GENRES: '@data/GET_GENRES',
     SELECT_CATEGORY: '@data/SELECT_CATEGORY',
+    RESET: '@data/RESET',
 }
 
 const INITIAL_STATE = {
@@ -45,7 +46,6 @@ export default function data(state = INITIAL_STATE , action: any) {
 
     switch (action.type) {
         case Types.GET_MOVIES:
-           // console.log(action)
            return {
                ...state,
                movies: action.movies.results,
@@ -54,19 +54,27 @@ export default function data(state = INITIAL_STATE , action: any) {
         case Types.GET_GENRES:
             return {
                 ...state,
-                genres: action.genres,
+                genres: action.genres.genres,
             }
             
 
         case Types.LOAD_MORE_MOVIES:
-            //console.log(action)
-            return {...state, 
+            return {
+                ...state, 
                 movies:  [ ...state.movies, ...action.newMovies],
             }
         
         case Types.SELECT_CATEGORY:
-            return {...state, 
+            return {
+                ...state, 
                 selectedCategoryId: action.category,
+            }
+
+        case Types.RESET:
+            return {
+                ...state,
+                movies: state.movies.slice(0, 20),
+                selectedCategoryId: -1,
             }
        
         default:
@@ -81,7 +89,7 @@ export const Creators = {
         type: Types.GET_MOVIES,
         movies,
     }),
-    getGenres: ({ genres }: DataProps['data']['genres']) => ({
+    getGenres: ( genres : DataProps['data']['genres']) => ({
         type: Types.GET_GENRES,
         genres,
     }),
@@ -92,6 +100,9 @@ export const Creators = {
     loadMoreMovies: (newMovies : DataProps['data']['movies']) => ({
         type: Types.LOAD_MORE_MOVIES,
         newMovies,
+    }),
+    reset: () => ({
+        type: Types.RESET,
     }),
     
     

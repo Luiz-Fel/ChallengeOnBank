@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-import { Button, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { RootStackParamList } from '../../../App';
 import { COLORS } from '../../colors';
 
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     headerTitle: {
-        fontSize: 48,
+        fontSize: 36,
         color: COLORS.text,
         padding: 16,
         marginRight: 'auto',
