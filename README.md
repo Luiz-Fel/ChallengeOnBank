@@ -8,7 +8,7 @@ To use this project you will need:
 
 ## To run this project 🚀:
 
-Just use this comand: 
+Use this comand on the project: 
 
 ```
   > expo start
