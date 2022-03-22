@@ -11,5 +11,5 @@ To use this project you will need:
 Use this comand on the project: 
 
 ```
-  > expo start
+   expo start
 ```
